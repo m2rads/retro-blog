@@ -6,7 +6,11 @@ import { ThemeProvider } from "@/components/theme-provider"
 export const metadata: Metadata = {
   title: "Code Journal | Software Engineering Blog",
   description: "A minimalist blog about software engineering",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+  }
 }
 
 export default function RootLayout({
