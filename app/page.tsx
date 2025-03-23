@@ -1,42 +1,45 @@
-import Link from "next/link"
+import { promises as fs } from 'fs'
+import path from 'path'
+import Link from 'next/link'
 import { ArrowRight } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Author } from "@/components/author"
+import matter from 'gray-matter'
 
-export default function Home() {
-  const posts = [
-    {
-      id: 1,
-      title: "Understanding Functional Programming",
-      date: "March 10, 2025",
-      excerpt: "An exploration of functional programming principles and how they can improve your code quality.",
-      slug: "understanding-functional-programming",
-    },
-    {
-      id: 2,
-      title: "The Evolution of JavaScript",
-      date: "February 28, 2025",
-      excerpt:
-        "Looking back at how JavaScript has evolved from a simple scripting language to a powerful tool for modern web development.",
-      slug: "evolution-of-javascript",
-    },
-    {
-      id: 3,
-      title: "Building Resilient Systems",
-      date: "February 15, 2025",
-      excerpt:
-        "Techniques and patterns for creating systems that can withstand failures and continue operating effectively.",
-      slug: "building-resilient-systems",
-    },
-    {
-      id: 4,
-      title: "The Art of Clean Code",
-      date: "January 30, 2025",
-      excerpt: "Principles and practices for writing code that is maintainable, readable, and elegant.",
-      slug: "art-of-clean-code",
-    },
-  ]
+type BlogPost = {
+  slug: string
+  title: string
+  date: string
+  description: string
+}
 
+async function getBlogPosts(): Promise<BlogPost[]> {
+  const postsDirectory = path.join(process.cwd(), 'content/posts')
+  const files = await fs.readdir(postsDirectory)
+  
+  const posts = await Promise.all(
+    files
+      .filter(file => file.endsWith('.mdx'))
+      .map(async file => {
+        const filePath = path.join(postsDirectory, file)
+        const source = await fs.readFile(filePath, 'utf8')
+        const { data } = matter(source)
+        
+        return {
+          slug: file.replace('.mdx', ''),
+          title: data.title,
+          date: data.date,
+          description: data.description
+        }
+      })
+  )
+  
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+}
+
+export default async function Home() {
+  const posts = await getBlogPosts()
+  
   return (
     <main className="max-w-2xl mx-auto px-4 py-12 font-mono">
       <header className="mb-12 border-b-2 border-black dark:border-white pb-4">
@@ -52,11 +55,11 @@ export default function Home() {
       <section>
         <ul className="space-y-12">
           {posts.map((post) => (
-            <li key={post.id} className="border-l-2 border-black dark:border-white pl-4">
+            <li key={post.slug} className="border-l-2 border-black dark:border-white pl-4">
               <article>
                 <div className="text-xs uppercase tracking-widest mb-1">{post.date}</div>
                 <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
-                <p className="mb-3">{post.excerpt}</p>
+                <p className="mb-3 text-gray-600 dark:text-gray-400">{post.description}</p>
                 <Link
                   href={`/posts/${post.slug}`}
                   className="inline-flex items-center text-sm uppercase tracking-wider hover:underline"
