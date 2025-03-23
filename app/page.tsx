@@ -59,7 +59,7 @@ export default async function Home() {
               <article>
                 <div className="text-xs uppercase tracking-widest mb-1">{post.date}</div>
                 <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
-                <p className="mb-3 text-gray-600 dark:text-gray-400">{post.description}</p>
+                <p className="mb-3 text-gray-600 dark:text-gray-300">{post.description}</p>
                 <Link
                   href={`/posts/${post.slug}`}
                   className="inline-flex items-center text-sm uppercase tracking-wider hover:underline"
