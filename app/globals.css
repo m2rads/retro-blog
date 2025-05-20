@@ -231,3 +231,21 @@
   border-radius: 50% !important;
 }
 
+/* Image component responsive styling */
+.image-container img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.image-container {
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Ensure images don't overflow on small screens */
+@media (max-width: 640px) {
+  .image-container > div {
+    max-width: 100% !important;
+  }
+}
+
