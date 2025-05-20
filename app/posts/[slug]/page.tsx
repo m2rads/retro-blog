@@ -7,6 +7,8 @@ import { promises as fs } from 'fs'
 import path from 'path'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import matter from 'gray-matter'
+import { Image } from "@/components/mdx/Image"
+import { Tweet } from "@/components/mdx/Tweet"
 
 type PostFrontmatter = {
   title: string
@@ -22,7 +24,11 @@ async function getPost(slug: string) {
     const { data, content } = matter(source)
     const { content: mdxContent } = await compileMDX({
       source: content,
-      options: { parseFrontmatter: false }
+      options: { parseFrontmatter: false },
+      components: {
+        Image,
+        Tweet
+      }
     })
     
     return { 
@@ -34,8 +40,11 @@ async function getPost(slug: string) {
   }
 }
 
-export default async function PostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug)
+export default async function PostPage({ params }: { params: { slug: string } | Promise<{ slug: string }> }) {
+  const resolvedParams = await Promise.resolve(params);
+  const slug = resolvedParams.slug;
+  
+  const post = await getPost(slug)
 
   if (!post) {
     notFound()

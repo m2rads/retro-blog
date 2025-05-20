@@ -1,4 +1,6 @@
 import type { MDXComponents } from 'mdx/types'
+import { Image } from '@/components/mdx/Image'
+import { Tweet } from '@/components/mdx/Tweet'
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -11,6 +13,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </pre>
     ),
     code: ({ children }) => <code>{children}</code>,
+    Image,
+    Tweet,
     ...components,
   }
 } 

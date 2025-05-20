@@ -101,3 +101,133 @@
   }
 }
 
+/* Custom styling for Tweet component */
+.react-tweet-theme {
+  --tweet-container-margin: 0 !important;
+  --tweet-body-font-size: 0.95rem !important;
+  --tweet-header-font-size: 1rem !important;
+  --tweet-header-font-weight: 500 !important;
+  --tweet-actions-margin: 0.5rem 0 0 !important;
+  --tweet-body-line-height: 1.4 !important;
+}
+
+.react-tweet {
+  max-height: 700px !important;
+  overflow: hidden !important;
+}
+
+.react-tweet iframe {
+  max-height: 350px !important;
+  overflow: hidden !important;
+}
+
+.react-tweet iframe::-webkit-scrollbar {
+  display: none !important;
+}
+
+.react-tweet-media {
+  max-height: 320px !important;
+  overflow: hidden !important;
+}
+
+/* Fix profile image positioning */
+.react-tweet-header-avatar {
+  min-width: 48px !important;
+  min-height: 48px !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.react-tweet-header-avatar img {
+  object-fit: cover !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: none !important;  /* Reset any transforms */
+  object-position: center !important; /* Center the image */
+}
+
+/* Make tweet text more readable */
+.react-tweet-body p {
+  margin: 0.5em 0 !important;
+  line-height: 1.5 !important;
+}
+
+/* Adjust header spacing */
+.react-tweet-header {
+  margin-bottom: 0.7rem !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Adjust footer spacing */
+.react-tweet-actions {
+  padding-top: 0.5rem !important;
+}
+
+/* Ensure the container can expand properly */
+.tweet-container {
+  min-height: 250px !important;
+}
+
+/* Additional profile image fixes for Twitter embeds */
+.tweet-container .react-tweet-header-avatar-image,
+.tweet-container [data-testid="Tweet-User-Avatar"],
+.react-tweet [data-testid="Tweet-User-Avatar"] img,
+.react-tweet .r-1adg3ll img {
+  object-position: center !important;
+  transform: none !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+/* Target all avatar images to ensure fix applies */
+.tweet-container img[src*="profile_images"],
+.react-tweet img[src*="profile_images"] {
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: none !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Fix for upside-down profile images in tweets */
+.tweet-container img[src*="profile_images"],
+.react-tweet img[src*="profile_images"],
+.react-tweet [data-testid="UserAvatar-Container"] img,
+.react-tweet .r-1cvl2hr img,
+.react-tweet img.r-1adg3ll,
+.react-tweet .r-1b6yd1w img,
+.react-tweet .r-18kxxzh img {
+  display: block !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+}
+
+/* Ensure parent containers are properly styled */
+.react-tweet [data-testid="UserAvatar-Container"],
+.react-tweet .r-1cvl2hr,
+.react-tweet .r-1adg3ll,
+.react-tweet .r-1b6yd1w,
+.react-tweet .r-18kxxzh {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 50% !important;
+}
+
