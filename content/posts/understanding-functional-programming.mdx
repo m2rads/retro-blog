@@ -1,37 +1,117 @@
 ---
-title: "Understanding Functional Programming"
-date: "March 10, 2025"
-description: "An exploration of functional programming principles and how they can improve your code quality."
+title: "Roll Out Your Own Authentication with JWT and Flask"
+date: "April 26, 2022"
+description: "My favourite way of setting up my own authentication using Flask and JWT."
 ---
 
-# Understanding Functional Programming
+<Image alt="JWT logo" src="/og/jwt.png" />
 
-Functional programming is a paradigm that treats computation as the evaluation of mathematical functions and avoids changing state and mutable data.
+## How to authenticate users in Flask using JWT tokens sent through headers?
 
-## Core Principles
+JWT (stands for JSON web tokens) is an amazing tool for securing APIs and managing users’ logins. Flask has a JWT extension that allows you to protect your API endpoints by sending JSON Web Tokens through headers, cookies and/or query strings. This article focuses on how to send JWT through headers.
 
-1. **Pure Functions**: Functions that given the same input, always return the same output without side effects.
-2. **Immutability**: Data cannot be changed after it's created.
-3. **First-Class Functions**: Functions can be assigned to variables, passed as arguments, and returned from other functions.
-4. **Higher-Order Functions**: Functions that take other functions as arguments or return them.
+## Step 1: Installation
+For your flask application to work, install Flask and flask-jwt-extended
 
-## Benefits
+`$ pip install Flask flask-jwt-extended`
 
-- **Predictability**: Pure functions make code more predictable and easier to test.
-- **Concurrency**: Immutable data and lack of side effects make concurrent programming safer.
-- **Modularity**: Functional code tends to be more modular and composable.
+## Step 2: Set up a Flask Server
+Let’s create a simple flask server to render our login page. In the app configuration set JWT location to headers. This makes sure that only the JWT tokens that are received through request headers are processed and received. Don’t forget to set your application secret key.
 
-## Examples in JavaScript
+```python
+# Here's what you need to import
+from flask import Flask, render_template, jsonify, json
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager, get_jwt_identity
 
-```javascript
-// Pure function
-const add = (a, b) => a + b;
+# Setting up global configurations for our app
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]  # specifying the location of JWT
+app.config["JWT_SECRET_KEY"] = "super-secret-key"
 
-// Higher-order function
-const map = (fn, arr) => arr.map(fn);
+jwt = JWTManager(app)
 
-// Function composition
-const compose = (f, g) => x => f(g(x));
+@app.route("/index")
+def index():
+    return render_template("index.html")
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
 ```
 
-Adopting functional programming principles can significantly improve code quality, even in languages that aren't purely functional. 
+Be sure to import all the specified methods from the Flask library. We will need them later.
+
+## Step 3: Set up your authentication routes
+Create an endpoint to authorize users. This is where we generate new JWT tokens to send to the users. Remember to specify the request method as a post request. If a get request is sent, it will not be processed.
+
+```python
+@app.route("/auth", methods=['POST'])
+def register():
+    data = request.get_json()
+    email = data['email']
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
+```
+
+The “request” method is available for us whenever we specify an endpoint and we can use its “get_json()” method to access the data as JSON objects. Here, you can “print(data)” if you want to visualize the request data. Then we use “create_access_token” to create a JWT access token and set the “identity” property to the user’s email. Then we send the token to the user as a JSON object using “jsonify”.
+
+## Protect a route using JWT _required
+We use the “@jwt_required” function wrapper to protect an endpoint like the one below. Notice the use of the “get_jwt_identity()” method which will give us access to the username that is trying to access this resource. Note that this functionality is only available when you use the wrapper function `“@jwt_required”`.
+
+```python 
+@app.route("/protected")
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity();
+    if current_user:
+        return jsonify(message="welcome" + current_user)
+```
+
+Our job is done on the server-side. Let’s get to the client-side and see how we can use get a JWT token and access the protected endpoint.
+
+## Step 4: Store the Token When Logging In
+Working with JWT through headers is as simple as storing the JWT token and sending it to the server when we want to access our protected route.
+
+Below we are sending a request to our endpoint to generate a new JWT token. Once we receive the response, we store it using JavaScript localStorage API.
+
+```js
+// sends POST request to the /auth API end-point
+const register() = async (e) => {
+  e.preventDefault();
+  
+  const username = document.getElementId("username");
+  
+  await fetch ('/login', {
+        method : 'POST',
+        headers: {'Content-Type': "application/json"},
+        body: JSON.stringify({username:username)
+    })
+    .then (response => response.json())
+    .then(data => localStorage.setItem('jwt', data.access_token);)
+```
+
+Once we store the access token, we can use it to access the protected endpoints like this:
+
+```js
+cosnt accessProtected = async (e) => { 
+  const options = {
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+    }
+  };
+  const response = await fetch('/protected', options);
+  const data = await response.json();
+  console.log(data)
+  return data;
+}
+```
+
+Here, we are getting the JWT token that we stored from localStorage and sending it to our “protected” route to access the resources. Notice the use of “Bearer” in the authorization header. we use Bearer to indicate that we are sending an authorization token with the request so that our endpoint can process the request from the client-side.
+
+In the end, if we console log our result, we can see the message sent from our protected route.
+
+<Image alt="login page" src="/og/flask.png" />
+
+--- 
+
+Conclusion
+This article was a simple walk-through of how to make use of flask JWT and work with the tokens through headers. The code used in this walk-through is accessible [here](https://github.com/m2rads/flask-jwt-example). If you liked this walk-through and would like to know more about the possibilities with this amazing library, you can read my next article where I write about how to implement MongoDB to authenticate users with JWT tokens through cookies.
