@@ -2,5 +2,17 @@
   "extends": [
     "next/core-web-vitals",
     "next/typescript"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error"
+  },
+  "ignorePatterns": ["components/ui/**/*"],
+  "overrides": [
+    {
+      "files": ["app/posts/[slug]/page.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
   ]
 }

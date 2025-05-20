@@ -47,7 +47,7 @@ export default async function Home() {
           <h1 className="text-4xl font-bold uppercase tracking-tight">CODE JOURNAL</h1>
           <ThemeToggle />
         </div>
-        <p className="mt-2 text-sm uppercase tracking-widest">THOUGHTS ON SOFTWARE ENGINEERING</p>
+        <p className="mt-2 text-sm uppercase tracking-widest">THOUGHTS ON SOFTWARE ENGINEERING and Testing</p>
       </header>
 
       <Author />

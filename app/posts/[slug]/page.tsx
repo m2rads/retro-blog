@@ -35,7 +35,8 @@ async function getPost(slug: string) {
       content: mdxContent,
       frontmatter: data as PostFrontmatter
     }
-  } catch (error) {
+  } catch {
+    // Silently return null when file is not found or can't be processed
     return null
   }
 }
