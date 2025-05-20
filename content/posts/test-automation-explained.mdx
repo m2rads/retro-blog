@@ -1,0 +1,43 @@
+---
+title: "Test Automation Explained"
+date: "Jan 21, 2024"
+description: "A Key to Superior Software Quality."
+---
+
+I want to start by explaining what test automation is, but before diving into the nitty-gritty details, we need to distinguish test automation from unit testing.
+
+## Unit Testing Vs. Automation Testing
+Most software engineers are quite familiar with unit testing, where the purpose is to test individual functions, branches, or even a single line, in an isolated environment. This isolation is key, allowing developers to verify each part of the codebase independently from the rest, ensuring that each piece behaves as expected. While unit testing is essential for verifying the correctness of code logic and functionality, it inherently focuses on the smallest units of code in isolation and thus, cannot ensure the system behaves correctly when these units are integrated. Integration issues, system behaviours, performance under load, and other real-world usage scenarios fall outside the scope of unit tests. This is where test automation steps in, bridging the gap between isolated code correctness and overall system reliability.
+
+
+<Image alt="Software Testing Paradigm" src="/og/testing-paradigm.png" />
+
+
+## Automation Testing Vs. Manual Testing
+Having covered unit testing, let’s shift our focus to manual testing. Manual testing is quite similar to automated testing, but with one essential difference: the tasks performed manually by a tester are executed through code in automated testing. This automation ensures that tests are reproducible and consistently follow the same sequence of execution. Automating repetitive tasks not only saves time but also guarantees precision. It ensures that no critical step is missed or any crucial action is forgotten, which might otherwise lead to undiscovered bugs before the software reaches production. Before we delve into the comparison of automated versus manual testing, let’s first understand what manual testing entails.
+
+Even though agile development has become the norm in the software industry, the testing phase often remains similar in the waterfall methodology. In such a scenario, QA analysts typically wait until features are deployed in the testing or development environments by developers before they start their work. Using tools like Postman, QA tests API functionalities and validate the responses against the database records. On the UI side, QAs manually go through the actions of an end-user, such as placing an order, to check if all elements function and appear as intended. It is quit similar when we locally test a new functionality we wrote in our software by going to the browser or using postman. Of course, real-world manual testing is far more detailed and complex than this brief overview suggests but we tend to keep it simple for the sake of this article.
+
+## Let’s Get Deeper in Automated Testing
+So far, we’ve learned that while unit testing is essential, it doesn’t capture the full picture when individual pieces of software are integrated. We’ve also seen that manual testing involves many repetitive tasks, which can be difficult to remember and thus challenging to reproduce when we need to test the same features repeatedly. It’s in these scenarios that automated testing becomes invaluable.
+
+<Image alt="Agile testing" src="/og/agile-testing.png" />
+
+Earlier, we simplified the concept of manual testing. Now, let’s explore how a similar scenario would unfold in an automated test suite. Imagine this situation: A new user story requires developers to modify the API’s signature. The business requirement is for users to be able to edit an item’s currency on the dashboard. While the developers are implementing these changes, you work on planning and designing test cases. You review the acceptance criteria, which state the following:
+
+### Description:
+- As a user, I want to be able to change the currency of the product I am selling.
+
+### Acceptance Criteria:
+- Currency Selection: Users should be able to select a different currency from a predefined list in the product settings.
+
+### Given, When, Then, Table:
+
+<Image alt="Given When Then Table" src="/og/given-when-then.png" />
+
+
+GWT (Given-When-Then) is an industry-recommended approach for writing test scenarios, particularly for new features. It lays a structured foundation for automating these scenarios through code. In the next chapter, we will explore [Spock](https://spockframework.org/), a [Groovy](https://groovy-lang.org/) based testing framework. Spock simplifies the automation of test scenarios by inherently providing a GWT structure within its framework. Don’t worry if you are not familiar with any of this yet — we’ll delve into it more comprehensively later on. For now, our focus is to understand how GWT and Spock together can facilitate the process of starting with test automation.
+
+                                    ----
+
+Consider touching up on the documentation of Groovy and Spock before the next article. Automated testing enables software teams to fully embrace the agile development model. The recommended approach to agile testing involves test engineers working alongside developers to create test cases concurrently with feature development. As soon as a feature is ready, these test cases can be executed as part of the (CI/CD) pipeline, further streamlining the process and enhancing efficiency.
